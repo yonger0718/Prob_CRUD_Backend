@@ -3,11 +3,13 @@ package tw.com.cathaybk.service;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tw.com.cathaybk.dto.EmployeeDTO;
 import tw.com.cathaybk.entity.Employee;
 import tw.com.cathaybk.dao.EmployeeDAO;
 import tw.com.cathaybk.exception.UserNotFoundException;
 import tw.com.cathaybk.utils.Result;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +19,12 @@ public class EmployeeService {
     @Autowired
     private EmployeeDAO employeeDAO;
 
-    public Result<Employee> saveEmployee(Employee employee) {
-        employeeDAO.save(employee); //TODO 因為新增也是自增，不會需要帶入employeeID -> 可能還是拿DTO好
+    public Result<EmployeeDTO> saveEmployee(EmployeeDTO employee) {
+        Employee emp = new Employee();
+        BeanUtils.copyProperties(employee, emp);
+        emp.setCreateTime(LocalDateTime.now());
+        emp.setUpdateTime(LocalDateTime.now());
+        employeeDAO.save(emp);
         return Result.success(employee);
     }
 
@@ -42,10 +48,10 @@ public class EmployeeService {
         return Result.success(employee);
     }
 
-    public Result<Employee> updateEmployee(Long id, Employee employee) {
+    public Result<Employee> updateEmployee(Long id, EmployeeDTO employee) {
         Employee emp = getEmployeeById(id);
         BeanUtils.copyProperties(employee, emp);
-        emp.setEmployeeId(id); //TODO 考慮用DTO取代掉這一段，便可以不用在封裝時傳入id
+        emp.setUpdateTime(LocalDateTime.now());
         return Result.success(employeeDAO.save(emp)); //try to use return employeeDAO.save(employee) but fail -> PID duplicate
     }
 }
