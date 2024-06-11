@@ -4,6 +4,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import tw.com.cathaybk.dto.EmployeeDTO;
 import tw.com.cathaybk.entity.Employee;
@@ -30,8 +34,13 @@ public class EmployeeController {
 
     @GetMapping()
     @Operation(summary = "搜尋所有員工資訊")
-    public Result<List<Employee>> getEmployees() {
-        return employeeService.getEmployees();
+    public Result<Page<Employee>> getEmployees(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "employeeId") String sortBy
+    ) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return employeeService.getEmployees(pageable);
     }
 
     @GetMapping("/{id}")
@@ -42,7 +51,7 @@ public class EmployeeController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "刪除員工")
-    public Result<Employee> deleteEmployee(@PathVariable Long id) {
+    public Result deleteEmployee(@PathVariable Long id) {
         return employeeService.deleteEmployee(id);
     }
 
