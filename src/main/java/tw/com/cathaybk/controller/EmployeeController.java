@@ -41,6 +41,7 @@ public class EmployeeController {
     ) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
         return employeeService.getEmployees(pageable);
+        // TODO 幫前端改寫為簡單版的VO
     }
 
     @GetMapping("/{id}")
