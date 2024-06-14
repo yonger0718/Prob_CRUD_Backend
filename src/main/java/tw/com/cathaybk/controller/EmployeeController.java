@@ -19,9 +19,9 @@ import java.util.List;
 @Tag(name = "員工操作API",
     description = "使用此API可以新增員工、搜尋員工、更新員工、刪除員工")
 @RestController()
-@CrossOrigin(origins = {"https://yonger-cathay.web.app",
-    "https://myapp-fujxotx5xq-de.a.run.app",
-    "https://yonger-cathay.firebaseapp.com"})
+//@CrossOrigin(origins = {"https://yonger-cathay.web.app",
+//    "https://myapp-fujxotx5xq-de.a.run.app",
+//    "https://yonger-cathay.firebaseapp.com"})
 @RequestMapping("/api/employee")
 @Slf4j
 public class EmployeeController {

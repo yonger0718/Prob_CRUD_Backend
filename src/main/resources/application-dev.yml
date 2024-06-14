@@ -8,3 +8,9 @@ logging:
     org:
       springframework:
         web: DEBUG
+
+allowed:
+  cors:
+    origins: >
+      http://localhost:4200,
+      http://localhost:8080
