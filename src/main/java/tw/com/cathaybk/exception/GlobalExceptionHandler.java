@@ -1,25 +1,24 @@
 package tw.com.cathaybk.exception;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import tw.com.cathaybk.utils.Result;
-
-import java.sql.SQLIntegrityConstraintViolationException;
 
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
-    public Result userNotFoundException(UserNotFoundException e) {
+    public ResponseEntity userNotFoundException(UserNotFoundException e) {
         log.error("異常訊息: {}", e.getMessage());
-        return Result.error(e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
     @ExceptionHandler
-    public Result exceptionHandler(Exception e) {
+    public ResponseEntity exceptionHandler(Exception e) {
         log.error("異常訊息: {}", e.getMessage());
-        return Result.error("發生預期外之錯誤");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("發生預期外之錯誤");
     }
 }

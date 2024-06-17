@@ -8,11 +8,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tw.com.cathaybk.dto.EmployeeDTO;
 import tw.com.cathaybk.entity.Employee;
 import tw.com.cathaybk.service.EmployeeService;
-import tw.com.cathaybk.utils.Result;
 
 import java.util.List;
 
@@ -31,37 +31,36 @@ public class EmployeeController {
 
     @PostMapping()
     @Operation(summary = "新增員工")
-    public Result saveEmployee(@RequestBody EmployeeDTO employee) {
+    public ResponseEntity saveEmployee(@RequestBody EmployeeDTO employee) {
         return employeeService.saveEmployee(employee);
     }
 
     @GetMapping()
     @Operation(summary = "搜尋所有員工資訊")
-    public Result<Page<Employee>> getEmployees(
+    public ResponseEntity<List<Employee>> getEmployees(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "employeeId") String sortBy
     ) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-        return employeeService.getEmployees(pageable);
+        return employeeService.getEmployees();
         // TODO 幫前端改寫為簡單版的VO
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "根據id搜尋員工")
-    public Result<Employee> getEmployee(@PathVariable Long id) {
+    public ResponseEntity<Employee> getEmployee(@PathVariable Long id) {
         return employeeService.getEmployee(id);
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "刪除員工")
-    public Result deleteEmployee(@PathVariable Long id) {
+    public ResponseEntity deleteEmployee(@PathVariable Long id) {
         return employeeService.deleteEmployee(id);
     }
 
     @PostMapping("/{id}")
     @Operation(summary = "更新員工資料")
-    public Result<Employee> updateEmployee(@PathVariable Long id, @RequestBody EmployeeDTO employee) {
+    public ResponseEntity<Employee> updateEmployee(@PathVariable Long id, @RequestBody EmployeeDTO employee) {
         return employeeService.updateEmployee(id, employee);
     }
 }
