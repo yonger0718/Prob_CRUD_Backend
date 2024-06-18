@@ -37,11 +37,7 @@ public class EmployeeController {
 
     @GetMapping()
     @Operation(summary = "搜尋所有員工資訊")
-    public ResponseEntity<List<Employee>> getEmployees(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "employeeId") String sortBy
-    ) {
+    public ResponseEntity<List<Employee>> getEmployees() {
         return employeeService.getEmployees();
         // TODO 幫前端改寫為簡單版的VO
     }
