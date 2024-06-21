@@ -5,7 +5,4 @@ spring:
 
 allowed:
   cors:
-    origins: >
-      https://yonger-cathay.web.app,
-      https://myapp-fujxotx5xq-de.a.run.app,
-      https://yonger-cathay.firebaseapp.com
+    origins: ${CORS_ALLOWED_ORIGINS}
