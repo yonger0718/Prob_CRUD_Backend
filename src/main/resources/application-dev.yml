@@ -2,6 +2,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+  cloud:
+    gcp:
+      sql:
+        instance-connection-name: ${sm://INSTANCE_NAME_DEV}
 
 logging:
   level:
@@ -13,4 +17,5 @@ allowed:
   cors:
     origins: >
       http://localhost:4200,
-      http://localhost:8080
+      http://localhost:8080,
+      http://localhost:80
