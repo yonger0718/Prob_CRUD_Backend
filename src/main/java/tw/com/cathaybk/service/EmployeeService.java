@@ -53,7 +53,7 @@ public class EmployeeService {
      */
     private Employee getEmployeeById(Long id) {
         log.info("取得員工資料 id: {}", id);
-        return employeeDAO.findById(id).orElseThrow(() -> new UserNotFoundException("User Not Found"));
+        return employeeDAO.findById(id).orElseThrow(() -> new UserNotFoundException("找不到該用戶"));
     }
 
     /**
@@ -75,7 +75,7 @@ public class EmployeeService {
     public ResponseEntity deleteEmployee(Long id) {
         if(!employeeDAO.existsById(id)) {
             log.info("查無員工資料 id: {}", id);
-            throw new UserNotFoundException("User Not Found");
+            throw new UserNotFoundException("找不到該用戶");
         }
         log.info("員工資料刪除成功 id: {}", id);
         employeeDAO.deleteById(id);
