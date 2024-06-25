@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import tw.com.cathaybk.dto.EmployeeDTO;
 import tw.com.cathaybk.entity.Employee;
-import tw.com.cathaybk.dao.EmployeeDAO;
+import tw.com.cathaybk.repository.EmployeeDAO;
 import tw.com.cathaybk.exception.UserNotFoundException;
 
 import java.time.LocalDateTime;
