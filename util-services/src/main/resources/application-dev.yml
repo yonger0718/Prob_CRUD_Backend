@@ -1,0 +1,25 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+  cloud:
+    gcp:
+      sql:
+        instance-connection-name: ${sm://INSTANCE_NAME_DEV}
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+
+allowed:
+  cors:
+    origins: >
+      http://localhost:4200,
+      http://localhost:8080,
+      http://localhost:80
+
+gcs:
+  bucket:
+    name: ${sm://BUCKET_NAME_DEV}

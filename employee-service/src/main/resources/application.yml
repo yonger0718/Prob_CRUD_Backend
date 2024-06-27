@@ -4,7 +4,7 @@ server:
 
 spring:
   application:
-    name: backend
+    name: employee-service
     hikari:
       connection-timeout: 30000
       idle-timeout: 600000

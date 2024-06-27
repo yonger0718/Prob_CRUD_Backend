@@ -23,6 +23,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("有鍵值重複情形發生!");
     }
 
+    @ExceptionHandler(UploadFailureException.class)
+    public ResponseEntity uploadFailureException(UploadFailureException e) {
+        log.error("異常訊息: {}", e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+
     @ExceptionHandler
     public ResponseEntity exceptionHandler(Exception e) {
         log.error("異常訊息: {}", e.getMessage());

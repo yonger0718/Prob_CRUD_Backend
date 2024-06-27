@@ -1,0 +1,16 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+  cloud:
+    gcp:
+      sql:
+        instance-connection-name: ${sm://INSTANCE_NAME}
+
+allowed:
+  cors:
+    origins: ${CORS_ALLOWED_ORIGINS}
+
+gcs:
+  bucket:
+    name: ${sm://BUCKET_NAME}

@@ -8,14 +8,14 @@
 - [x] Direct connect via GCP VPC
 - [x] GCP Run
 - [ ] feat/ add VO for GET/employees
-- [ ] feat/ search employee via name
-- [ ] domain CORS issue 
+- [x] domain CORS issue 
 
   half way done, due to cannot use application.yaml
   - default: https://myapp-fujxotx5xq-de.a.run.app
   - custom: 
     1. https://yonger-cathay.web.app/swagger-ui/index.html
     2. https://yonger-cathay.firebaseapp.com/swagger-ui/index.html
+
 ## Wish List
 - [ ] Upload img for employee
 - [ ] Compress and save in GCP Storage

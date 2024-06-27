@@ -11,8 +11,13 @@
     <groupId>tw.com.cathaybk</groupId>
     <artifactId>backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
     <name>backend</name>
     <description>backend</description>
+    <modules>
+        <module>employee-service</module>
+        <module>util-services</module>
+    </modules>
     <properties>
         <java.version>17</java.version>
         <spring-cloud-gcp.version>5.4.1</spring-cloud-gcp.version>

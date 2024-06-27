@@ -1,0 +1,33 @@
+server:
+  port: 8081
+  forward-headers-strategy: framework
+
+spring:
+  application:
+    name: upload-service
+    hikari:
+      connection-timeout: 30000
+      idle-timeout: 600000
+      maxLifetime: 1800000
+      maximum-pool-size: 10
+      auto-commit: true
+
+  config:
+    import: "sm://"
+
+  cloud:
+    gcp:
+      sql:
+        database-name: ${sm://DB_NAME}
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: ${sm://DB_USERNAME}
+    password: ${sm://DB_PASSWORD}
+    hikari:
+      data-source-properties:
+        socketFactory: com.google.cloud.sql.postgres.SocketFactory
+
+  jpa:
+#    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true

@@ -35,4 +35,6 @@ public class Employee  implements Serializable {
     private LocalDateTime createTime;
     @Column(name = "update_time")
     private LocalDateTime updateTime;
+    @Column(name = "iamge_url")
+    private String imgUrl;
 }
