@@ -3,6 +3,7 @@ package tw.com.cathaybk.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,9 @@ public class EmployeeService {
     private final EmployeeDAO employeeDAO;
 
     private final RestTemplate restTemplate;
+
+    @Value("${util-service.host}")
+    private String utilServiceHost;
 
     /**
      * 儲存資料，回傳員工資訊
@@ -59,7 +63,7 @@ public class EmployeeService {
      * @param id
      * @return Employee
      */
-    private Employee getEmployeeById(Long id) {
+    public Employee getEmployeeById(Long id) {
         log.info("取得員工資料 id: {}", id);
         return employeeDAO.findById(id).orElseThrow(() -> new UserNotFoundException("找不到該用戶"));
     }
@@ -117,7 +121,7 @@ public class EmployeeService {
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
         ResponseEntity<String> imgUrl = restTemplate.postForEntity(
-                "http://localhost:8081/api/upload/employee/" + id,
+                utilServiceHost + "/api/upload/employee/" + id,
                 requestEntity,
                 String.class);
         if(imgUrl.getStatusCode().is2xxSuccessful()) {

@@ -10,3 +10,7 @@ spring:
 allowed:
   cors:
     origins: ${CORS_ALLOWED_ORIGINS}
+
+
+util-service:
+  host: ${UTIL_SERVICE_HOST}

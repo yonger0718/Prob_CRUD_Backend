@@ -4,11 +4,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,8 +31,8 @@ public class EmployeeController {
     @PostMapping()
     @Operation(summary = "新增員工")
     public ResponseEntity<Employee> saveEmployee(
-            @RequestBody EmployeeDTO employee,
-            @RequestParam(value = "image", required = false) MultipartFile file) throws IOException {
+            @RequestPart(value = "employee", required = true) EmployeeDTO employee,
+            @RequestPart(value = "image", required = false) MultipartFile file) throws IOException {
         ResponseEntity<Employee> employeeResponseEntity = employeeService.saveEmployee(employee); //先save才有id
         if(file != null) {
             employeeService.uploadEmployeeImage(Objects.requireNonNull(employeeResponseEntity.getBody())
@@ -65,18 +60,24 @@ public class EmployeeController {
         return employeeService.deleteEmployee(id);
     }
 
-    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     @Operation(summary = "更新員工資料")
     public ResponseEntity<Employee> updateEmployee(
             @PathVariable Long id,
-            @RequestBody EmployeeDTO employee,
-            @RequestParam(value = "image", required = false) MultipartFile file) throws IOException {
-        ResponseEntity<Employee> employeeResponseEntity = employeeService.updateEmployee(id, employee);
-        if(file != null) {
-            employeeService.uploadEmployeeImage(Objects.requireNonNull(employeeResponseEntity.getBody())
-                    .getEmployeeId(), file);
+            @RequestPart(value = "employee", required = true) EmployeeDTO employee,
+            @RequestPart(value = "image", required = false) MultipartFile file) throws IOException {
+        ResponseEntity<Employee> res;
+        if(employeeService.getEmployeeById(id) == null) {
+            res = employeeService.saveEmployee(employee);
         }
-        return employeeResponseEntity;
+        else {
+            res = employeeService.updateEmployee(id, employee);
+        }
+
+        if(file != null) {
+            employeeService.uploadEmployeeImage(Objects.requireNonNull(res.getBody().getEmployeeId()), file);
+        }
+        return res;
     }
 
     @PostMapping("/upload/{id}")

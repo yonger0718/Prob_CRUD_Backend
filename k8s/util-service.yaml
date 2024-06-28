@@ -1,0 +1,40 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: util-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: util-service
+  template:
+    metadata:
+      labels:
+        app: util-service
+    spec:
+      containers:
+      - name: util-service
+        image: asia-east1-docker.pkg.dev/cathay-prob/cathay-prob-backend/util-service:latest
+        ports:
+        - containerPort: 8081
+        resources:
+          requests:
+            cpu: 200m
+            memory: 256Mi
+          limits:
+            cpu: 1
+            memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: util-service
+spec:
+  selector:
+    app: util-service
+  ports:
+    - protocol: TCP
+      port: 8081
+      targetPort: 8081
+  type: ClusterIP
