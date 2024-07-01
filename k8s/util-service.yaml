@@ -1,10 +1,10 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: util-service
+  namespace: my-app
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: util-service
@@ -13,28 +13,59 @@ spec:
       labels:
         app: util-service
     spec:
+      serviceAccountName: employee-ksa
       containers:
       - name: util-service
         image: asia-east1-docker.pkg.dev/cathay-prob/cathay-prob-backend/util-service:latest
         ports:
         - containerPort: 8081
-        resources:
-          requests:
-            cpu: 200m
-            memory: 256Mi
-          limits:
-            cpu: 1
-            memory: 512Mi
+        volumeMounts:
+        - name: secrets-store-inline
+          mountPath: "/mnt/secrets-store"
+          readOnly: true
+        env:
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: gcp-secrets
+              key: DB_NAME
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: gcp-secrets
+              key: DB_USERNAME
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: gcp-secrets
+              key: DB_PASSWORD
+        - name: INSTANCE_NAME
+          valueFrom:
+            secretKeyRef:
+              name: gcp-secrets
+              key: INSTANCE_NAME
+        - name: BUCKET_NAME
+          valueFrom:
+            secretKeyRef:
+              name: gcp-secrets
+              key: BUCKET_NAME
+      volumes:
+      - name: secrets-store-inline
+        csi:
+          driver: secrets-store-gke.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: "gcp-secrets"
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: util-service
+  namespace: my-app
 spec:
   selector:
     app: util-service
   ports:
-    - protocol: TCP
-      port: 8081
+    - port: 8081
       targetPort: 8081
   type: ClusterIP
